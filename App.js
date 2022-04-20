@@ -16,7 +16,7 @@ Amplify.configure(config);
 class App extends React.Component {
   // define some state to hold the data returned from the API
   state = {
-    name: '', description: '', city: '', restaurants: []
+    name: '', description: '', city: '', restaurants: [], coins: []
   }
   async componentDidMount() {
     // Added some better user error handling
@@ -35,6 +35,13 @@ class App extends React.Component {
       })
     } catch (err) {
       console.log('error fetching restaurants...', err)
+    }
+    try {
+      const data = await API.get('cryptoapi', '/coins?limit=5&start=100')
+      console.log('data from Lambda REST API: ', data)
+      this.setState({ coins: data.coins })
+    } catch (err) {
+      console.log('error fetching coin data...', err)
     }
   }
   // this method calls the API and creates the mutation
@@ -72,6 +79,16 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <View>
+        {
+          this.state.coins.map((c, i) => (
+            <View key={i} style={styles.row}>
+              <Text style={styles.name}>{c.name}</Text>
+              <Text>{c.price_usd}</Text>
+            </View>
+          ))
+        }
+      </View>
         <TextInput
           style={{ height: 50, margin: 5, backgroundColor: "#ddd" }}
           onChangeText={v => this.onChange('name', v)}
