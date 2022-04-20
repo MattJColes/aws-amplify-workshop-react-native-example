@@ -42,5 +42,11 @@ export type AmplifyDependentResourcesAttributes = {
             "Id": "string",
             "appName": "string"
         }
+    },
+    "storage": {
+        "rnworkshopstorage": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

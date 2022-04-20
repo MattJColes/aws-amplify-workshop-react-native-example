@@ -1,0 +1,14 @@
+{
+  "resourceName": "rnworkshopstorage",
+  "policyUUID": "53d48f09",
+  "bucketName": "rnamplify1c51678474a14b4a8854c73bdf6bc23e",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

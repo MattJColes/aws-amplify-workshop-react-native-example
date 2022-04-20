@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, TextInput } from 'react-native';
 import React from 'react';
-import { Auth, API, graphqlOperation, Analytics } from 'aws-amplify';
+import { API, graphqlOperation, Analytics, Auth, Storage } from 'aws-amplify'
 import { listRestaurants } from './src/graphql/queries'
 import { createRestaurant } from './src/graphql/mutations'
 import 'react-native-get-random-values';
@@ -29,7 +29,7 @@ class App extends React.Component {
     // execute the restaurant query in componentDidMount
     try {
       const restaurantData = await API.graphql(graphqlOperation(listRestaurants))
-      console.log('restaurantData:', restaurantData)
+      //console.log('restaurantData:', restaurantData)
       this.setState({
         restaurants: restaurantData.data.listRestaurants.items
       })
@@ -38,7 +38,7 @@ class App extends React.Component {
     }
     try {
       const data = await API.get('cryptoapi', '/coins?limit=5&start=100')
-      console.log('data from Lambda REST API: ', data)
+      //console.log('data from Lambda REST API: ', data)
       this.setState({ coins: data.coins })
     } catch (err) {
       console.log('error fetching coin data...', err)
@@ -52,6 +52,18 @@ class App extends React.Component {
         username: this.state.username
       }
     })
+  }
+  addToStorage = () => {
+    Storage.put('textfiles/mytext.txt', `Hello World`)
+      .then (result => {
+        console.log('result: ', result)
+      })
+      .catch(err => console.log('error: ', err));
+  }
+  readFromStorage = () => {
+    Storage.list('textfiles/')
+      .then(data => console.log('data from S3: ', data))
+      .catch(err => console.log('error fetching from S3', err))
   }
   createRestaurant = async() => {
     const { name, description, city  } = this.state
@@ -87,6 +99,8 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <Button onPress={this.readFromStorage} title='Read Storage' />
+        <Button onPress={this.addToStorage} title='Add to Storage' />
         <Button onPress={this.recordEvent} title='Record Event' />
         <View>
         {
