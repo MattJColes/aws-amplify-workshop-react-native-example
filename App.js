@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView, Button, TextInput } from 'react-native';
 import React from 'react';
-import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { Auth, API, graphqlOperation, Analytics } from 'aws-amplify';
 import { listRestaurants } from './src/graphql/queries'
 import { createRestaurant } from './src/graphql/mutations'
 import 'react-native-get-random-values';
@@ -45,6 +45,14 @@ class App extends React.Component {
     }
   }
   // this method calls the API and creates the mutation
+  recordEvent = () => {
+    Analytics.record({
+      name: 'My test event',
+      attributes: {
+        username: this.state.username
+      }
+    })
+  }
   createRestaurant = async() => {
     const { name, description, city  } = this.state
     // store the restaurant data in a variable
@@ -79,6 +87,7 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <Button onPress={this.recordEvent} title='Record Event' />
         <View>
         {
           this.state.coins.map((c, i) => (

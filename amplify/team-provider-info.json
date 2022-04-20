@@ -14,7 +14,8 @@
     },
     "categories": {
       "auth": {
-        "rnamplifyc46768fa": {}
+        "rnamplifyc46768fa": {},
+        "true": {}
       },
       "function": {
         "basiclambda": {
